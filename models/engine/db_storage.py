@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 DBStorage class
 """
@@ -72,4 +71,3 @@ class DBStorage:
     def close(self):
         """close method"""
         self.__session.close()
-
