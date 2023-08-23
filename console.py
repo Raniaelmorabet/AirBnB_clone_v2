@@ -113,33 +113,30 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-    if not args:
+    def do_create(self, arg):
+    """Create a new instance of a specified class with given parameters"""
+    args = shlex.split(arg)
+    if len(args) < 1:
         print("** class name missing **")
         return
 
-    args_list = args.split()
-    class_name = args_list[0]
-    params = args_list[1:]
-
-    if class_name not in HBNBCommand.classes:
+    class_name = args[0]
+    if class_name not in self.classes:
         print("** class doesn't exist **")
         return
 
-    new_instance = HBNBCommand.classes[class_name]()
+    class_attrs = {}
+    for param in args[1:]:
+        key, value = param.split('=')
+        if '"' in value:  # String value
+            value = value.strip('"').replace('_', ' ')
+        elif '.' in value:  # Float value
+            value = float(value)
+        else:  # Integer value
+            value = int(value)
+        class_attrs[key] = value
 
-    for param in params:
-        param_name, param_value = param.split('=')
-        if hasattr(new_instance, param_name):
-            param_name = param_name.replace('_', ' ')
-            if param_value.startswith('"') and param_value.endswith('"'):
-                param_value = param_value[1:-1].replace('\\', '')
-            elif '.' in param_value:
-                param_value = float(param_value)
-            else:
-                param_value = int(param_value)
-            setattr(new_instance, param_name, param_value)
-
+    new_instance = self.classes[class_name](**class_attrs)
     new_instance.save()
     print(new_instance.id)
 
