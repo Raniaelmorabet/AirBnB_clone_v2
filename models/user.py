@@ -3,10 +3,8 @@
 from models.base_model import BaseModel, Base
 
 # SQLAlchemy modules
-from sqlalchemy import Column
-from sqlalchemy import String
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-
 
 class User(BaseModel, Base):
     """Defines a class User Attributes"""
