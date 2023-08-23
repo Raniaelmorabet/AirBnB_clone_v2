@@ -4,6 +4,7 @@ from models.base_model import BaseModel
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
 from models.amenity import Amenity, place_amenity
+from models.review import Review
 from models import storage
 
 class Place(BaseModel):
@@ -22,6 +23,8 @@ class Place(BaseModel):
 
     amenities = relationship(
         'Amenity', secondary=place_amenity, back_populates='place_amenities', viewonly=False)
+
+    reviews = relationship('Review', back_populates='place', cascade='all, delete-orphan')
 
     if storage_type == 'file':
         @property
