@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" This modules handles Database Storage """
+""" This module handles Database Storage """
 from sqlalchemy import create_engine
 from os import getenv
 from models.base_model import Base
@@ -21,7 +21,7 @@ class DBStorage:
 
     def __init__(self):
         '''
-        Create engine for database
+        Create engine for the database
         '''
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
             getenv('HBNB_MYSQL_USER'),
@@ -36,7 +36,7 @@ class DBStorage:
 
     def all(self, cls=None):
         '''
-        query for all objects on the current database session
+        Query for all objects in the current database session
         '''
         classes = {
             "City": City,
@@ -68,21 +68,21 @@ class DBStorage:
             return result
 
     def new(self, obj):
-        '''add the object to the current database session'''
+        '''Add the object to the current database session'''
         self.__session.add(obj)
 
     def save(self):
-        '''commit all changes of the current database session'''
+        '''Commit all changes of the current database session'''
         self.__session.commit()
 
     def delete(self, obj=None):
-        '''delete obj from the current database session'''
+        '''Delete obj from the current database session'''
         self.__session.delete(obj)
 
     def reload(self):
         '''
-        - create all tables in the database
-        - create the current database session from the engine
+        - Create all tables in the database
+        - Create the current database session from the engine
         '''
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
@@ -92,7 +92,6 @@ class DBStorage:
 
     def close(self):
         """
-        Because SQLAlchemy doesn't reload his `Session`
-        when it's time to insert new data, we force it to!
+        Close the current database session by calling `close()` on the session.
         """
         self.__session.close()
